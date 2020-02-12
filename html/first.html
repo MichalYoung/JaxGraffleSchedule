@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>First SVG experiments</title>
+
+    <script>
+
+        function random(bound) {
+            return Math.floor(Math.random() * bound);
+        }
+
+        function recolor(el) {
+            r = random(256);
+            g = random(256);
+            b = random(256);
+            el.setAttribute("fill", `rgb(${r},${g},${b}`);
+        }
+
+    </script>
+</head>
+<body>
+
+
+
+<svg width="90%" height="90%" viewBox="0 0 500 500"
+  preserveAspectRatio="xMinYMin meet"
+>
+   <rect  id="theRect"
+          x="200" y="200"  height="100" width="100"
+         onclick="recolor(this);"
+    />
+    <polygon points="50,5 100,5 125,30 125,80 100,105 50,105 25,80 25,30" fill="#ED6E46"
+    onclick="alert('Alert!');"
+    />
+</svg>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule with grid model</title>
+    <script src="lib/zepto.js"> </script>
+    <style>
+        #wrapper {
+            width: 90%;
+            max-width: 900px;
+            display: grid;
+            grid-teplate-columns: 2em 1fr 1fr 1fr 1fr 1fr;
+            background: gainsboro;
+        }
+        .appt { background: ghostwhite;
+            border: 0.5px solid rgb(180,180,180);
+            padding: 3pt;
+        }
+        .appt > p {
+            margin-top: 0;
+            text-align: center;
+        }
+        .oclock { min-height: 2em;
+            max-width: 4em;
+            padding-right: 5pt;
+            text-align: right;
+            border-top:1pt solid gainsboro;
+            background: white;
+            grid-column: 1;
+        }
+        .day {
+                background: white;
+                grid-row: 1;
+                text-align: center;
+                font-family: sans-serif;
+        }
+
+    </style>
+
+    <script>
+        function is_it_loaded() { alert("It is loaded"); }
+        // Column numbers
+        var column = {
+            Monday: 2, Tuesday: 3, Wednesday: 4,
+            Thursday: 5, Friday: 6
+        };
+        function row_num(hour) {
+            return 1 + 2 * (hour - 8);
+        }
+
+        function appt(day, from_hour, to_hour, txt) {
+            let col = column[day];
+            let row = row_num(from_hour);
+            let end_row = row + (to_hour - from_hour) * 2;
+            console.log(
+                `${day} ${from_hour}-${to_hour} row=${row}-${end_row}`)
+            $("#wrapper").append(
+                `<div class="appt"
+                  style="grid-column: ${col}; grid-row: ${row} /${end_row};"
+                  >
+                  <p>${txt}</p>
+                  </div>`);
+        }
+    </script>
+</head>
+<body>
+
+<div id="wrapper">
+    <div class="oclock" style="grid-row: 2 / 21">&nbsp;</div>
+
+    <div class="oclock" style="grid-row: 2;">8</div>
+    <div class="oclock" style="grid-row: 4;">9</div>
+    <div class="oclock" style="grid-row: 6;">10</div>
+    <div class="oclock" style="grid-row: 8;">11</div>
+    <div class="oclock" style="grid-row: 10;">12</div>
+    <div class="oclock" style="grid-row: 12;">1p</div>
+    <div class="oclock" style="grid-row: 14;">2p</div>
+    <div class="oclock" style="grid-row: 16;">3p</div>
+    <div class="oclock" style="grid-row: 18;">4p</div>
+    <div class="oclock" style="grid-row: 20;">5p</div>
+
+    <div class="day" style="grid-column: 1">&nbsp;</div>
+    <div class="day" style="grid-column: 2">Mo</div>
+    <div class="day" style="grid-column: 3">Tu</div>
+    <div class="day" style="grid-column: 4">We</div>
+    <div class="day" style="grid-column: 5">Th</div>
+    <div class="day" style="grid-column: 6">Fr</div>
+
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        // is_it_loaded();
+        appt("Monday", 9, 11, "Monday Meeting");
+        appt("Tuesday", 10, 11, "Tuesday shorter");
+        appt("Friday", 17, 18, "TGIF");
+        appt("Thursday", 13,15, "We must have lunch sometime, don't you think?")
+    });
+</script>
+</body>
+</html>

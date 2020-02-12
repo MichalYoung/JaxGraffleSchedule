@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grid</title>
+    <script src="lib/svg.js"></script>
+    <script>
+
+        function do_page() {
+            var draw = SVG('drawing');
+            //  Width and height set the actual area taken on the page (screen coords)
+            //  Model coordinates are in a 100 x 100 grid which will zoom as the
+            //  page size varies.  100 x 100 makes it easy to think in terms of
+            //  fractions of an imaginary page. Elements can exceed the 100x100
+            //  bounds, but then scrolling will be necessary to see part of the
+            //  diagram.
+            //
+            draw.attr({width: "90%", height: "90%",
+                preserveAspectRatio: "xMinYMin meet",
+                viewBox: "0 0 100 100"});
+
+            // Just a sample graphic to make zooming visible
+            // var rect = draw.rect(100, 100).attr({ fill: '#f06' });
+            var txt = draw.text("This is\ntwo lines of text")
+                .move(15, 0)
+                .addClass('bypix');
+            var normal = draw.text("Another line")
+                .move(10,10)
+                .addClass("normal");
+        }
+
+        function random(bound) {
+            return Math.floor(Math.random() * bound);
+        }
+
+        function recolor(el) {
+            r = random(256);
+            g = random(256);
+            b = random(256);
+            el.setAttribute("fill", `rgb(${r},${g},${b}`);
+        }
+
+        SVG.on(document, 'DOMContentLoaded', function() {
+            do_page();
+            // alert("done");
+        });
+    </script>
+
+    <style>
+        p { font: 12pt Times serif; }
+        .normal { font-family: serif; font-size: 8pt; fill: blue; }
+        .bypix { font-family: sans-serif; font-size: 12px; fill: red; }
+    </style>
+
+</head>
+<body>
+
+
+
+<div id="drawing"></div>
+<p>This text is under the graphic.</p>
+</body>
+</html>

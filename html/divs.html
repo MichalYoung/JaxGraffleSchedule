@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Divs.html</title>
+    <!-- Experiment in layout out a weekly schedule using only divs,
+    with transformation from model coordinates to view coordinates
+    in JavaScript.
+    -->
+    <script src="lib/zepto.js"></script>
+    <style>
+        .appt {background: bisque;}
+    </style>
+    <script>
+        // Page layout --- we'll try width in terms of %
+        var label_col_width = 15;
+        var appt_col_width = 85 / 5;
+        var col_day_left = {
+            Monday: label_col_width,
+            Tuesday: label_col_width + appt_col_width,
+            Wednesday: label_col_width + 2 * appt_col_width,
+            Thursday: label_col_width + 3 * appt_col_width,
+            Friday: label_col_width + 4 * appt_col_width
+        }
+
+        // vertical position in em; 2em for header,
+        // then 2em for each 30 minutes.
+        // For first experiment we'll just give time in
+        // as number of hours.
+        var start_time = 8;
+        var header_height = 2;
+        var em_per_hour = 4;
+
+        // appt_{x, y, width, height} functions return
+        // strings that can be interpolated into CSS.
+        function appt_x(day, from_hour, to_hour) {
+            return `${col_day_left[day]}%`;
+        }
+        function appt_y(day, from_hour, to_hour) {
+            let y = header_height + (from_hour - start_time) * em_per_hour;
+            return `${y}em`;
+        }
+        function appt_height(day, from_hour, to_hour) {
+            let ht = (to_hour - from_hour) * em_per_hour;
+            return `${ht}em`;
+        }
+        function appt_width(day, from_hour, to_hour) {
+            return `${appt_col_width}%`;
+        }
+
+        function appt(day_of_week, from_hour, to_hour, content) {
+            sched = $("#schedule");
+            let x = appt_x(day_of_week, from_hour, to_hour);
+            let y = appt_y(day_of_week, from_hour, to_hour);
+            let width = appt_width(day_of_week, from_hour, to_hour);
+            let height = appt_height(day_of_week, from_hour, to_hour);
+            sched.append(`<div class="appt"
+               style="position: relative;
+                      top: ${y}; left: ${x};
+                      height: ${height}; width: ${width};"
+               >
+               ${content};
+               </div>`);
+        }
+    </script>
+
+</head>
+<body>
+    <div id="wrapper" style="width: 100%; background: eeeeee;">
+        <p>Before schedule</p>
+    <div id="schedule"
+            style="max-width: 500em; background: #ee0000; border=1px black;"
+    >
+        <p>within schedule</p>
+        <div style="width: 17%; text-align: center; border=1px black;
+             position: absolute; left: 15%; top: 0;">Monday</div>
+        <div style="width: 17%; text-align: center;
+             position: absolute;  left: 32%; top: 0;">Tuesday</div>
+        <div style="width: 17%; text-align: center;
+              position: absolute; left: 49%; top: 0;">Wedneday</div>
+        <div style="width: 17%; text-align: center;
+              position: absolute; left: 66%; top: 0;">Thursday</div>
+        <div style="width: 17%; text-align: center;
+            position: absolute; left: 83%; top: 0;">Friday</div>
+
+        <div style="position: relative; left: 0; top: 2em;">8:00</div>
+        <div style="position: relative; left: 0; top: 6em;">9:00</div>
+        <div style="position: relative; left: 0; top: 10em;">10:00</div>
+        <div style="position: relative; left: 0; top: 14em;">11:00</div>
+        <div style="position: relative; left: 0; top: 18em;">12:00</div>
+    </div>
+    </div>
+
+<script>
+    appt("Monday", 8, 9, "First thing Monday");
+    appt("Tuesday",9, 9.5, "Coffee");
+    appt("Friday", 9.5, 12, "Late breakfast")
+</script>
+
+</body>
+</html>
